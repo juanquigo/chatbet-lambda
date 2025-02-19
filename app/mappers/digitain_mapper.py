@@ -39,16 +39,19 @@ class DigitainMapper(BaseMapper):
             "result": {
                 "homeTeam": {
                     "name": stake[1]["NM"][SPANISH_LANGUAGE_CODE],
+                    "profit": stake[1]["PPF"],
                     "odds": stake[1]["FCR"],
                     "betId": stake[1]["ID"],
                 },
                 "awayTeam": {
                     "name": stake[2]["NM"][SPANISH_LANGUAGE_CODE],
+                    "profit": stake[2]["PPF"],
                     "odds": stake[2]["FCR"],
                     "betId": stake[2]["ID"],
                 },
                 "tie": {
                     "name": stake[0]["NM"][SPANISH_LANGUAGE_CODE],
+                    "profit": stake[0]["PPF"],
                     "odds": stake[0]["FCR"],
                     "betId": stake[0]["ID"],
                 },
@@ -62,6 +65,7 @@ class DigitainMapper(BaseMapper):
         for stake in calculated_stakes:
             mapped_stake = {
                 "name": f"{stake['NM'].get(SPANISH_LANGUAGE_CODE, '')} {stake['ARG']}",
+                "profit": stake["PPF"],
                 "odds": stake["FCR"],
                 "betId": stake["ID"],
             }
@@ -80,6 +84,7 @@ class DigitainMapper(BaseMapper):
         for stake in calculated_stakes:
             mapped_stake = {
                 "name": f"{stake['NM'].get(SPANISH_LANGUAGE_CODE, '')} {stake['ARG']}",
+                "profit": stake["PPF"],
                 "odds": stake["FCR"],
                 "betId": stake["ID"],
             }
