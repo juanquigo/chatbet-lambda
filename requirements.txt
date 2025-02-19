@@ -1,0 +1,7 @@
+fastapi
+fastapi-cli
+mangum
+httpx
+python-dotenv
+pydantic-settings
+ruff
