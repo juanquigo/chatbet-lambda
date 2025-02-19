@@ -1,5 +1,7 @@
 from typing import ClassVar
 
+from app.mappers.base_mapper import BaseMapper
+
 from .digitain_mapper import DigitainMapper
 
 
@@ -7,7 +9,7 @@ class MapperFactory:
     _mappers: ClassVar[dict[str]] = {"digitain": DigitainMapper}
 
     @staticmethod
-    def get_mapper(provider: str) -> object:
+    def get_mapper(provider: str) -> BaseMapper:
         """Retrieve the mapper class instance for the given provider.
 
         Args:

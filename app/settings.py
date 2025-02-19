@@ -15,5 +15,11 @@ class Settings(BaseSettings):
 
 
 @lru_cache
-def get_settings():
+def get_settings() -> dict[str]:
+    """Retrieve the application settings as a dictionary.
+
+    Returns:
+        dict[str]: A dictionary containing the application settings.
+
+    """
     return Settings().model_dump()
