@@ -3,7 +3,6 @@ from .base_mapper import BaseMapper
 RESULT_STAKE_ID = 1
 HANDICAP_STAKE_ID = 2
 OVER_UNDER_STAKE_ID = 3
-SPANISH_LANGUAGE_CODE = "13"
 
 
 class DigitainMapper(BaseMapper):
@@ -34,38 +33,38 @@ class DigitainMapper(BaseMapper):
         min_index = min(calculated_factors, key=calculated_factors.get)
         return paired_stakes[min_index]
 
-    def get_result_stake(self, stake):
+    def get_result_stake(self, stake, language_code_id):
         return {
             "result": {
                 "homeTeam": {
-                    "name": stake[1]["NM"][SPANISH_LANGUAGE_CODE],
-                    "profit": stake[1]["PPF"],
+                    "name": stake[1]["NM"][language_code_id],
+                    "profit": stake[1]["PFF"],
                     "odds": stake[1]["FCR"],
                     "betId": stake[1]["ID"],
                 },
                 "awayTeam": {
-                    "name": stake[2]["NM"][SPANISH_LANGUAGE_CODE],
-                    "profit": stake[2]["PPF"],
+                    "name": stake[2]["NM"][language_code_id],
+                    "profit": stake[2]["PFF"],
                     "odds": stake[2]["FCR"],
                     "betId": stake[2]["ID"],
                 },
                 "tie": {
-                    "name": stake[0]["NM"][SPANISH_LANGUAGE_CODE],
-                    "profit": stake[0]["PPF"],
+                    "name": stake[0]["NM"][language_code_id],
+                    "profit": stake[0]["PFF"],
                     "odds": stake[0]["FCR"],
                     "betId": stake[0]["ID"],
                 },
             },
         }
 
-    def get_over_under_stake(self, stake):
+    def get_over_under_stake(self, stake, language_code_id):
         paired_stakes = self.pair_stakes(stake)
         calculated_stakes = self.calculate_main_market(paired_stakes)
         mapped_data = {}
         for stake in calculated_stakes:
             mapped_stake = {
-                "name": f"{stake['NM'].get(SPANISH_LANGUAGE_CODE, '')} {stake['ARG']}",
-                "profit": stake["PPF"],
+                "name": f"{stake['NM'].get(language_code_id, '')} {stake['ARG']}",
+                "profit": stake["PFF"],
                 "odds": stake["FCR"],
                 "betId": stake["ID"],
             }
@@ -77,14 +76,14 @@ class DigitainMapper(BaseMapper):
 
         return {"over_under": mapped_data}
 
-    def get_handicap_stake(self, stake):
+    def get_handicap_stake(self, stake, language_code_id):
         paired_stakes = self.pair_stakes(stake)
         calculated_stakes = self.calculate_main_market(paired_stakes)
         mapped_data = {}
         for stake in calculated_stakes:
             mapped_stake = {
-                "name": f"{stake['NM'].get(SPANISH_LANGUAGE_CODE, '')} {stake['ARG']}",
-                "profit": stake["PPF"],
+                "name": f"{stake['NM'].get(language_code_id, '')} {stake['ARG']}",
+                "profit": stake["PFF"],
                 "odds": stake["FCR"],
                 "betId": stake["ID"],
             }
@@ -98,16 +97,18 @@ class DigitainMapper(BaseMapper):
 
     def map_odds(self, data):
         stakes = data["grouped_stks"]
+        language_code_id = str(data["language_code_id"])
+
         return {
             "success": True,
             "main_market": "result",
-            **self.get_result_stake(stakes[RESULT_STAKE_ID]),
+            **self.get_result_stake(stakes[RESULT_STAKE_ID], language_code_id),
             "result_regular_time": None,
             "score": None,
             "both_teams_to_score": None,
             "double_chance": None,
-            **self.get_over_under_stake(stakes[OVER_UNDER_STAKE_ID]),
-            **self.get_handicap_stake(stakes[HANDICAP_STAKE_ID]),
+            **self.get_over_under_stake(stakes[OVER_UNDER_STAKE_ID], language_code_id),
+            **self.get_handicap_stake(stakes[HANDICAP_STAKE_ID], language_code_id),
             "half_time_total": None,
             "half_time_result": None,
             "half_time_handicap": None,
