@@ -66,7 +66,6 @@ class DigitainProvider(BaseProvider):
                 grouped_stks[result["sttId"]] = match["STKS"] if match and "STKS" in match else []
 
             return {
-                "success": True,
                 "filtered_match": filtered_match,
                 "grouped_stks": grouped_stks,
                 "language_code_id": language_code_id,

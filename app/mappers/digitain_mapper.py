@@ -181,7 +181,7 @@ class DigitainMapper(BaseMapper):
         language_code_id = str(data["language_code_id"])
 
         return {
-            "success": True,
+            "status": "success",
             "main_market": "result",
             **self.get_result_stake(stakes[RESULT_STAKE_ID], language_code_id),
             "result_regular_time": None,
