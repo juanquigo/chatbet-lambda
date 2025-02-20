@@ -58,6 +58,14 @@ Once the application is running, you can access the Swagger documentation at:
 http://localhost:8000/docs
 ```
 
+### **Run Tests**
+
+You can run tests with the following command:
+
+```
+pytest --cov=app --cov-report=html --cov-config=.coveragerc
+```
+
 ## **Project Structure**
 
 ```
